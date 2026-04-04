@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield Simulator</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Экран авторизации -->
+        <div id="auth-screen" class="screen active">
+            <div class="auth-container">
+                <div class="auth-logo">🛡️</div>
+                <h1 class="auth-title">CyberShield</h1>
+                <p class="auth-subtitle">Симулятор кибербезопасности</p>
+
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">Вход</button>
+                    <button class="tab-btn" data-tab="register">Регистрация</button>
+                </div>
+
+                <form id="login-form" class="auth-form active">
+                    <div class="form-group">
+                        <label>Имя пользователя</label>
+                        <input type="text" id="login-username" required placeholder="Введите логин">
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" id="login-password" required placeholder="Введите пароль">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <div id="login-error" class="error-msg"></div>
+                </form>
+
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label>Имя пользователя</label>
+                        <input type="text" id="reg-username" required placeholder="Придумайте логин">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="reg-email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" id="reg-password" required placeholder="Минимум 6 символов">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                    <div id="reg-error" class="error-msg"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Главный экран -->
+        <div id="main-screen" class="screen">
+            <header class="main-header">
+                <div class="header-left">
+                    <span class="logo">🛡️</span>
+                    <h1>CyberShield</h1>
+                </div>
+                <div class="header-center">
+                    <div class="league-badge" id="league-badge">
+                        <span class="league-icon">🌱</span>
+                        <span class="league-name" id="league-name">Новичок</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="reputation-bar">
+                        <span class="rep-label">⭐</span>
+                        <span class="rep-value" id="rep-value">500</span>
+                    </div>
+                    <button class="btn btn-icon" id="btn-stats" title="Статистика">📊</button>
+                    <button class="btn btn-icon" id="btn-logout" title="Выход">🚪</button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- Карта сценариев -->
+                <div id="map-view" class="view active">
+                    <h2 class="section-title">🗺️ Карта угроз</h2>
+                    <p class="section-desc">Выберите локацию для прохождения сценариев</p>
+
+                    <div class="locations-grid" id="locations-grid">
+                        <div class="location-card" data-location="Офис">
+                            <div class="location-icon">🏢</div>
+                            <h3>Офис</h3>
+                            <p>Корпоративные угрозы</p>
+                            <div class="location-progress">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="location-count">0/0 пройдено</span>
+                        </div>
+                        <div class="location-card" data-location="Дом">
+                            <div class="location-icon">🏠</div>
+                            <h3>Дом</h3>
+                            <p>Личная безопасность</p>
+                            <div class="location-progress">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="location-count">0/0 пройдено</span>
+                        </div>
+                        <div class="location-card" data-location="Общественный Wi-Fi">
+                            <div class="location-icon">📶</div>
+                            <h3>Общественный Wi-Fi</h3>
+                            <p>Угрозы в публичных сетях</p>
+                            <div class="location-progress">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="location-count">0/0 пройдено</span>
+                        </div>
+                        <div class="location-card" data-location="Улица">
+                            <div class="location-icon">🌆</div>
+                            <h3>Улица</h3>
+                            <p>Физические угрозы</p>
+                            <div class="location-progress">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="location-count">0/0 пройдено</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Список сценариев -->
+                <div id="scenarios-view" class="view">
+                    <div class="view-header">
+                        <button class="btn btn-back" id="btn-back-to-map">← Назад</button>
+                        <h2 id="location-title">Сценарии</h2>
+                    </div>
+                    <div class="scenarios-list" id="scenarios-list"></div>
+                </div>
+
+                <!-- Игровой экран -->
+                <div id="game-view" class="view">
+                    <div class="game-header">
+                        <button class="btn btn-back" id="btn-back-to-scenarios">← Назад</button>
+                        <div class="game-info">
+                            <span class="game-level" id="game-level">Уровень 1</span>
+                            <span class="game-type" id="game-type">Фишинг</span>
+                        </div>
+                    </div>
+
+                    <div class="narrative-container" id="narrative-container">
+                        <div class="narrative-header" id="narrative-header">
+                            <h3 id="scenario-title">Заголовок</h3>
+                        </div>
+                        <div class="narrative-content" id="narrative-content">
+                            <p id="scenario-narrative">Текст сценария...</p>
+                        </div>
+                        <div class="narrative-visual" id="narrative-visual">
+                            <div class="email-sim" id="email-sim" style="display:none;">
+                                <div class="email-header-sim">
+                                    <span class="email-from">От: <span id="email-from"></span></span>
+                                    <span class="email-subject">Тема: <span id="email-subject"></span></span>
+                                </div>
+                                <div class="email-body-sim" id="email-body-sim"></div>
+                            </div>
+                            <div class="phone-sim" id="phone-sim" style="display:none;">
+                                <div class="phone-screen">
+                                    <div class="caller-info">
+                                        <div class="caller-avatar">👤</div>
+                                        <div class="caller-name" id="caller-name"></div>
+                                        <div class="caller-status">Входящий звонок...</div>
+                                    </div>
+                                    <div class="phone-actions">
+                                        <button class="phone-btn decline">Отклонить</button>
+                                        <button class="phone-btn accept">Принять</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="atm-sim" id="atm-sim" style="display:none;">
+                                <div class="atm-machine">
+                                    <div class="atm-screen">Введите PIN-код</div>
+                                    <div class="atm-slot">
+                                        <div class="atm-card-slot" id="atm-card-slot"></div>
+                                    </div>
+                                    <div class="atm-keypad">
+                                        <div class="keypad-row"><button>1</button><button>2</button><button>3</button></div>
+                                        <div class="keypad-row"><button>4</button><button>5</button><button>6</button></div>
+                                        <div class="keypad-row"><button>7</button><button>8</button><button>9</button></div>
+                                        <div class="keypad-row"><button></button><button>0</button><button>OK</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wifi-sim" id="wifi-sim" style="display:none;">
+                                <div class="wifi-list">
+                                    <div class="wifi-item"><span>☕ FreeCoffee_WiFi</span><span class="wifi-status">Подключено</span></div>
+                                </div>
+                                <div class="wifi-warning" id="wifi-warning"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="choices-container" id="choices-container">
+                        <h4>Что вы сделаете?</h4>
+                        <div class="choices-grid" id="choices-grid"></div>
+                    </div>
+
+                    <!-- Результат -->
+                    <div class="result-overlay" id="result-overlay" style="display:none;">
+                        <div class="result-card" id="result-card">
+                            <div class="result-icon" id="result-icon">✅</div>
+                            <h3 id="result-title">Отлично!</h3>
+                            <p id="result-feedback">Текст обратной связи</p>
+
+                            <div class="consequence-animation" id="consequence-animation" style="display:none;">
+                                <div class="hack-anim" id="hack-anim"></div>
+                            </div>
+
+                            <div class="learning-section" id="learning-section">
+                                <h4>📚 Алгоритм защиты</h4>
+                                <ol id="protection-steps"></ol>
+
+                                <div class="references">
+                                    <div class="ref-item">
+                                        <strong>CWE:</strong>
+                                        <span id="cwe-ref"></span>
+                                    </div>
+                                    <div class="ref-item">
+                                        <strong>OWASP:</strong>
+                                        <span id="owasp-ref"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rep-change" id="rep-change"></div>
+
+                            <button class="btn btn-primary btn-next" id="btn-next-scenario">Продолжить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Экран статистики -->
+                <div id="stats-view" class="view">
+                    <div class="view-header">
+                        <button class="btn btn-back" id="btn-back-from-stats">← Назад</button>
+                        <h2>📊 Моя статистика</h2>
+                    </div>
+
+                    <div class="stats-grid" id="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-value" id="stat-completed">0</div>
+                            <div class="stat-label">Пройдено сценариев</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-value" id="stat-rate">0%</div>
+                            <div class="stat-label">Успешность</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-value" id="stat-rep">500</div>
+                            <div class="stat-label">Репутация</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🏆</div>
+                            <div class="stat-value" id="stat-league">Новичок</div>
+                            <div class="stat-label">Лига</div>
+                        </div>
+                    </div>
+
+                    <div class="league-progress-container">
+                        <h3>Прогресс лиги</h3>
+                        <div class="league-bar">
+                            <div class="league-bar-fill" id="league-bar-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="league-stages">
+                            <span>🌱 Новичок</span>
+                            <span>📗 Средний</span>
+                            <span>📘 Продвинутый</span>
+                            <span>🎓 Эксперт</span>
+                            <span>🏅 Мастер</span>
+                            <span>👑 Легенда</span>
+                        </div>
+                    </div>
+
+                    <div class="scenarios-history">
+                        <h3>История прохождений</h3>
+                        <div id="scenarios-history-list"></div>
+                    </div>
+
+                    <div class="certificate-section">
+                        <h3>📜 Сертификат</h3>
+                        <p>Пройдите все сценарии с успешностью > 80% для получения сертификата</p>
+                        <div id="certificate-status" class="certificate-locked">
+                            <div class="cert-lock-icon">🔒</div>
+                            <p>Сертификат заблокирован</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
