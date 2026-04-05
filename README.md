@@ -1,335 +1,194 @@
-docker-compose build
+Реализованная функциональность
+Функционал 1: Интерактивные сценарии кибератак
+Пользователь попадает в реалистичную среду (Офис, Дом, Общественный Wi-Fi, Улица)
+Столкновение с 7 типами атак: Фишинг, Подбор пароля, MITM, Социальная инженерия, Дипфейк, Скимминг, QR-фишинг
+Выбор из 3-4 вариантов действий с мгновенной валидацией и обратной связью
+Функционал 2: Система обучения через действие
+При ошибке — пошаговая анимация последствий взлома (терминал-стиль)
+При успехе — алгоритм защиты из 3-5 шагов с ссылками на CWE и OWASP
+Контекстные подсказки и справка по уязвимостям
+Функционал 3: Геймификация и прогресс
+Шкала репутации (0–2000+): +50 за верное решение, -30 за ошибку
+Система лиг: Новичок → Средний → Продвинутый → Эксперт → Мастер → Легенда
+Личный кабинет со статистикой: пройденные сценарии, % успешности, история действий
+Верифицированный сертификат с QR-кодом при достижении 80% успешности
+Особенность проекта в следующем:
+Киллерфича-1: Обучение без реальных угроз
+Все атаки симулированы на уровне интерфейса и текста
+Никаких реальных вредоносных файлов, скриптов или эксплойтов
+Безопасная среда для отработки навыков цифровой гигиены
+Киллерфича-2: Адаптивная визуализация последствий
+Уникальная система анимаций «взлома» в стиле терминала
+Каждый тип атаки имеет собственный сценарий последствий
+Эмоциональное вовлечение через наглядную демонстрацию рисков
+Киллерфича-3: Готовность к эволюции угроз
+Модульная архитектура сценариев: новый тип атаки добавляется через JSON/SQL
+API-интерфейс для импорта реальных кейсов от партнёров (Минцифры, Касперский)
+Интеграция с базами CWE, OWASP Top 10, APWG для актуальности контента
+Основной стек технологий
 
-CyberShield Simulator
- 1.0.0 
-OAS 3.1
-/openapi.json
-Интерактивный симулятор кибербезопасности
+Особенность проекта в следующем:
+Киллерфича-1: Обучение без реальных угроз
+Все атаки симулированы на уровне интерфейса и текста
+Никаких реальных вредоносных файлов, скриптов или эксплойтов
+Безопасная среда для отработки навыков цифровой гигиены
+Киллерфича-2: Адаптивная визуализация последствий
+Уникальная система анимаций «взлома» в стиле терминала
+Каждый тип атаки имеет собственный сценарий последствий
+Эмоциональное вовлечение через наглядную демонстрацию рисков
+Киллерфича-3: Готовность к эволюции угроз
+Модульная архитектура сценариев: новый тип атаки добавляется через JSON/SQL
+API-интерфейс для импорта реальных кейсов от партнёров (Минцифры, Касперский)
+Интеграция с базами CWE, OWASP Top 10, APWG для актуальности контента
 
-Authorize
-auth
+Основной стек технологий
+🐍 Язык: Python 3.11
+🚀 Бэкенд: FastAPI 0.109.0, Uvicorn
+🗄️ База данных: PostgreSQL 15 (Alpine), SQLAlchemy 2.0 (Async)
+🔐 Безопасность: passlib[bcrypt], python-jose (JWT), HTTPBearer
+🌐 Фронтенд: HTML5, CSS3 (Material Design 3), Vanilla JavaScript
+🐳 Контейнеризация: Docker, Docker Compose v3.8
+📡 API: OpenAPI 3.0 (Swagger UI автогенерация)
+🔧 Сборка: pip, docker build (без Webpack/Gulp — минимализм)
+📦 Зависимости: asyncpg, pydantic, python-multipart
 
+Демо
+🌐 Демо сервиса доступно по адресу: http://localhost:8000
+(после запуска через docker-compose)
+https://www.figma.com/community/file/1622446824315997910
 
-POST
-/api/auth/register
-Register
+СРЕДА ЗАПУСКА
+Развертывание сервиса производится в контейнерах Docker, что обеспечивает:
 
-Parameters
-Try it out
-No parameters
+📚 API Документация:
+Swagger UI: http://localhost:8000/docs
+ReDoc: http://localhost:8000/redoc
+OpenAPI JSON: http://localhost:8000/openapi.json
 
-Request body
+УСТАНОВКА
+Установка через Docker (рекомендуемый способ)
+# 1. Клонируйте репозиторий
+git clone <repository-url>
+cd cyber-shield-simulator
 
-application/json
-Example Value
-Schema
-{
-  "username": "Qrq3FnUpIqU2KfkJ3PWUQPDTkfe5BpQWDl2Kc6PI6whLFC",
-  "email": "user@example.com",
-  "password": "stringst"
-}
-Responses
-Code	Description	Links
-200	
-Successful Response
+# 2. Запустите проект одной командой
+docker-compose up -d --build
 
-Media type
+# 3. Дождитесь готовности (проверка логов)
+docker-compose logs -f backend
+# Ожидайте: "INFO: Application startup complete."
 
-application/json
-Controls Accept header.
-Example Value
-Schema
-{
-  "access_token": "string",
-  "token_type": "bearer",
-  "user": {
-    "id": 0,
-    "username": "string",
-    "email": "string",
-    "reputation": 0,
-    "league": "string",
-    "created_at": "2026-04-05T02:55:40.873Z"
-  }
-}
-No links
-422	
-Validation Error
+# 4. Откройте в браузере
+# → http://localhost:8000
 
-Media type
+Установка вручную (для разработки)
+# 1. Подготовка окружения
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get install -y python3.11 python3.11-venv postgresql postgresql-contrib git
 
-application/json
-Example Value
-Schema
-{
-  "detail": [
-    {
-      "loc": [
-        "string",
-        0
-      ],
-      "msg": "string",
-      "type": "string"
-    }
-  ]
-}
-No links
+# 2. Клонирование проекта
+git clone <repository-url>
+cd cyber-shield-simulator
 
-POST
-/api/auth/login
-Login
+# 3. Создание виртуального окружения
+python3.11 -m venv .venv
+source .venv/bin/activate
 
-Parameters
-Try it out
-No parameters
+# 4. Установка зависимостей бэкенда
+pip install -r backend/requirements.txt
 
-Request body
+# 5. Настройка БД (см. раздел "База данных" ниже)
 
-application/json
-Example Value
-Schema
-{
-  "username": "string",
-  "password": "string"
-}
-Responses
-Code	Description	Links
-200	
-Successful Response
+# 6. Запуск сервера разработки
+uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
 
-Media type
+База данных
+Настройка PostgreSQL в Docker (автоматически)
+При запуске docker-compose up:
+Создаётся база cyber_sim
+Создаётся пользователь cyber_user с паролем cyber_pass_2024
+Выполняются миграции из init.sql (таблицы + тестовые данные)
 
-application/json
-Controls Accept header.
-Example Value
-Schema
-{
-  "access_token": "string",
-  "token_type": "bearer",
-  "user": {
-    "id": 0,
-    "username": "string",
-    "email": "string",
-    "reputation": 0,
-    "league": "string",
-    "created_at": "2026-04-05T02:55:40.865Z"
-  }
-}
-No links
-422	
-Validation Error
+Ручная настройка 
+# 1. Запуск PostgreSQL
+sudo systemctl start postgresql
+sudo -u postgres psql
 
-Media type
+# 2. Создание БД и пользователя
+CREATE DATABASE cyber_sim;
+CREATE USER cyber_user WITH PASSWORD 'cyber_pass_2024';
+GRANT ALL PRIVILEGES ON DATABASE cyber_sim TO cyber_user;
+\q
 
-application/json
-Example Value
-Schema
-{
-  "detail": [
-    {
-      "loc": [
-        "string",
-        0
-      ],
-      "msg": "string",
-      "type": "string"
-    }
-  ]
-}
-No links
-game
+# 3. Применение миграций
+psql -U cyber_user -d cyber_sim -f init.sql
 
+# 4. Настройка подключения в .env (опционально)
+# Создайте файл backend/.env:
+echo "DATABASE_URL=postgresql+asyncpg://cyber_user:cyber_pass_2024@localhost:5432/cyber_sim" > backend/.env
+echo "SECRET_KEY=your-dev-secret-key-here" >> backend/.env
+# 1. Запуск PostgreSQL
+sudo systemctl start postgresql
+sudo -u postgres psql
 
-GET
-/api/game/scenarios
-Get Scenarios
+# 2. Создание БД и пользователя
+CREATE DATABASE cyber_sim;
+CREATE USER cyber_user WITH PASSWORD 'cyber_pass_2024';
+GRANT ALL PRIVILEGES ON DATABASE cyber_sim TO cyber_user;
+\q
 
-Parameters
-Try it out
-No parameters
+# 3. Применение миграций
+psql -U cyber_user -d cyber_sim -f init.sql
 
-Responses
-Code	Description	Links
-200	
-Successful Response
+# 4. Настройка подключения в .env (опционально)
+# Создайте файл backend/.env:
+echo "DATABASE_URL=postgresql+asyncpg://cyber_user:cyber_pass_2024@localhost:5432/cyber_sim" > backend/.env
+echo "SECRET_KEY=your-dev-secret-key-here" >> backend/.env
 
-Media type
+Установка зависимостей проекта
+Бэкенд (Python)
+# Через pip (в виртуальном окружении)
+pip install -r backend/requirements.txt
 
-application/json
-Controls Accept header.
-Example Value
-Schema
-"string"
-No links
+# Зависимости:
+# fastapi, uvicorn, sqlalchemy[asyncio], asyncpg,
+# python-jose[cryptography], passlib[bcrypt], bcrypt==3.2.2,
+# pydantic, pydantic-settings, python-multipart
 
-GET
-/api/game/scenario/{scenario_id}
-Get Scenario
+Выполнение миграций
+В Docker (автоматически)
+Миграции выполняются при старте приложения через lifespan в backend/main.py:
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)  # ← Создание таблиц
+    yield
+    
+Вручную
+# Активировать окружение
+source .venv/bin/activate
 
-Parameters
-Try it out
-Name	Description
-scenario_id *
-integer
-(path)
-scenario_id
-Responses
-Code	Description	Links
-200	
-Successful Response
+# Запустить создание таблиц через Python
+python -c "
+import asyncio
+from backend.database import engine, Base
 
-Media type
+async def init():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+        
+asyncio.run(init())
+print('✅ Миграции применены')
+"
+Установка зависимостей проекта
+Установка зависимостей осуществляется с помощью Composer. Если у вас его нет вы можете установить его по инструкции на getcomposer.org.
 
-application/json
-Controls Accept header.
-Example Value
-Schema
-"string"
-No links
-422	
-Validation Error
+После этого выполнить команду в директории проекта:
 
-Media type
+composer install
 
-application/json
-Example Value
-Schema
-{
-  "detail": [
-    {
-      "loc": [
-        "string",
-        0
-      ],
-      "msg": "string",
-      "type": "string"
-    }
-  ]
-}
-No links
-
-POST
-/api/game/action
-Submit Action
-
-
-Parameters
-Try it out
-No parameters
-
-Request body
-
-application/json
-Example Value
-Schema
-{
-  "scenario_id": 0,
-  "choice_id": 0
-}
-Responses
-Code	Description	Links
-200	
-Successful Response
-
-Media type
-
-application/json
-Controls Accept header.
-Example Value
-Schema
-{
-  "is_correct": true,
-  "feedback": "string",
-  "consequence_animation": "string",
-  "reputation_change": 0,
-  "scenario_completed": true,
-  "cwe_info": "string",
-  "owasp_info": "string",
-  "protection_steps": [
-    "string"
-  ]
-}
-No links
-422	
-Validation Error
-
-Media type
-
-application/json
-Example Value
-Schema
-{
-  "detail": [
-    {
-      "loc": [
-        "string",
-        0
-      ],
-      "msg": "string",
-      "type": "string"
-    }
-  ]
-}
-No links
-stats
-
-default
-
-
-GET
-/api/health
-Health
-
-Parameters
-Try it out
-No parameters
-
-Responses
-Code	Description	Links
-200	
-Successful Response
-
-Media type
-
-application/json
-Controls Accept header.
-Example Value
-Schema
-"string"
-No links
-
-Schemas
-ActionRequestExpand allobject
-ActionResponseExpand allobject
-HTTPValidationErrorCollapse allobject
-detailExpand allarray<object>
-StatsResponseCollapse allobject
-total_scenariosinteger
-completed_scenariosinteger
-success_ratenumber
-total_attemptsinteger
-current_reputationinteger
-leaguestring
-league_progressnumber
-scenario_resultsExpand allarray<object>
-TokenResponseCollapse allobject
-access_tokenstring
-token_typeExpand allstring
-userExpand allobject
-UserCreateCollapse allobject
-usernamestring[3, 50] charactersmatches ^[a-zA-Z0-9_-]+$
-emailstringemail
-passwordstring>= 8 characters
-UserLoginCollapse allobject
-usernamestring
-passwordstring
-UserResponseCollapse allobject
-idinteger
-usernamestring
-emailstring
-reputationinteger
-leaguestring
-created_atstringdate-time
-ValidationErrorCollapse allobject
-locExpand allarray<(string | integer)>
-msgstring
-typestring
+Разработчики
+Куприяненко Светлана Эдуардовна  fullstack teamlead
+Ватулин Алексей Сергеевич
+Агафонцев Всеволод
+Панфилов Юрий Игоревич
