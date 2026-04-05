@@ -4,23 +4,19 @@ from datetime import datetime
 from pydantic import BaseModel, EmailStr, Field, field_validator
 import re
 
+from pydantic import BaseModel, EmailStr, Field, field_validator
+
 
 class UserCreate(BaseModel):
-    username: str = Field(..., min_length=3, max_length=50)
+    username: str = Field(..., min_length=3, max_length=50, pattern=r'^[a-zA-Z0-9_-]+$')
     email: EmailStr
-    password: str = Field(..., min_length=8, max_length=72)  # ← Ограничение 72 символа
+    password: str = Field(..., min_length=8)  # ← Явно указываем 8
 
     @field_validator('password')
     @classmethod
-    def password_strength(cls, v: str) -> str:
-        if len(v.encode('utf-8')) > 72:
-            raise ValueError('Пароль не должен превышать 72 байта')
-        if not re.search(r'[A-Z]', v):
-            raise ValueError('Пароль должен содержать хотя бы одну заглавную букву')
-        if not re.search(r'[a-z]', v):
-            raise ValueError('Пароль должен содержать хотя бы одну строчную букву')
-        if not re.search(r'\d', v):
-            raise ValueError('Пароль должен содержать хотя бы одну цифру')
+    def password_must_be_strong(cls, v):
+        if len(v) < 8:
+            raise ValueError('Пароль должен содержать минимум 8 символов')
         return v
 
 
